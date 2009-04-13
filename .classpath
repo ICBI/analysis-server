@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/caintegrator-analysis-server.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/concurrent.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-common-client.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-common.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-system-client.jar"/>
+	<classpathentry kind="lib" path="lib/jbossmq-client.jar"/>
+	<classpathentry kind="lib" path="lib/jms.jar"/>
+	<classpathentry kind="lib" path="lib/jnp-client.jar"/>
+	<classpathentry kind="lib" path="lib/log4j.jar"/>
+	<classpathentry kind="lib" path="lib/REngine.jar"/>
+	<classpathentry kind="lib" path="lib/Rserve.jar"/>
+	<classpathentry kind="lib" path="lib/caintegrator-analysis-commons.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
