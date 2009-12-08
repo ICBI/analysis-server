@@ -184,34 +184,35 @@ public class PrincipalComponentAnalysisTaskR extends AnalysisTaskR {
 			pca1 = doREval("pcaMatrixX <- pcaResult$x[,1]").asDoubles();
 			pca2 = doREval("pcaMatrixY <- pcaResult$x[,2]").asDoubles();
 			pca3 = doREval("pcaMatrixZ <- pcaResult$x[,3]").asDoubles();
-			REXP exp = doREval("pcaLabels <- dimnames(pcaResult$x)");
+			String[] sampleIds = doREval("pcaLabels <- dimnames(pcaResult$x)[[1]]").asStrings();
 			// System.out.println("Got back xVals.len=" + xVals.length + "
 			// yVals.len=" + yVals.length + " zVals.len=" + zVals.length);
 			//Vector labels = (Vector) exp.asVector();
-			String[] labels = exp.asStrings();
 			//Vector sampleIds = ((REXP) (labels.get(0))).asVector();
-			String[] sampleIds = exp.asStrings();
 	//		Vector pcaLabels = ((REXP) (labels.get(1))).asVector();
 	
 			List<PCAresultEntry> pcaResults = new ArrayList<PCAresultEntry>(
 					sampleIds.length);
 	
-			//String sampleId = null;
-			//int index = 0;
-//			for (Iterator i = sampleIds.iterator(); i.hasNext();) {
-//				sampleId = ((REXP) i.next()).asString();
-//				pcaResults.add(new PCAresultEntry(sampleId, pca1[index],
-//						pca2[index], pca3[index]));
-//				index++;
-//			}
-			
-			for (int i=0; i < sampleIds.length; i++) {
-				//sampleId = ((REXP) i.next()).asString();
-				//sampleId = sampleIds[i];
-				pcaResults.add(new PCAresultEntry(sampleIds[i], pca1[i],
+	        /*
+			String sampleId = null;
+			int index = 0;
+			for (Iterator i = sampleIds.iterator(); i.hasNext();) {
+				sampleId = ((REXP) i.next()).asString();
+				pcaResults.add(new PCAresultEntry(sampleId, pca1[index],
+						pca2[index], pca3[index]));
+				index++;
+			}
+           */
+	       String sampleId = null;
+	       for (int i=0;i< sampleIds.length ; i++) {
+	         sampleId = sampleIds[i];
+	         pcaResults.add(new PCAresultEntry(sampleId, pca1[i],
 						pca2[i], pca3[i]));
-		    }
-	
+	         
+	       } 
+	 
+	        
 			result.setResultEntries(pcaResults);
 			
 		}
