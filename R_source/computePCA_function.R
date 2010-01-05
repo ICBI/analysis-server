@@ -37,3 +37,9 @@
     dpca <- prcomp(t(filteredDataMatrix[tmp==0,]))
     return(dpca)
     }
+    
+# No filter PCA computation
+	computePCAnoFilter <- function(datamat) {
+	    dpca <- prcomp(t(datamat))
+		return(dpca)
+	}

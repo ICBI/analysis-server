@@ -163,12 +163,8 @@ public class PrincipalComponentAnalysisTaskR extends AnalysisTaskR {
 						+ foldChangeFilterValue + " )");
 			}
 			else {
-			   logger.error("Both variance filter and fold change filter are not active. Can't compute result.");
-			   AnalysisServerException ex = new AnalysisServerException(
-				"Both variance filter and fold change filter are not active");
-			   ex.setFailedRequest(pcaRequest);
-			   setException(ex);
-			   return;
+			   logger.info("Both variance filter and fold change filter are not active. Using no filter.");
+				doRvoidEval("pcaResult <- computePCAnoFilter(pcaInputMatrix)");
 			}
 	
 			// check to make sure at least 3 components came back
@@ -190,7 +186,6 @@ public class PrincipalComponentAnalysisTaskR extends AnalysisTaskR {
 			//Vector labels = (Vector) exp.asVector();
 			//Vector sampleIds = ((REXP) (labels.get(0))).asVector();
 	//		Vector pcaLabels = ((REXP) (labels.get(1))).asVector();
-	
 			List<PCAresultEntry> pcaResults = new ArrayList<PCAresultEntry>(
 					sampleIds.length);
 	
