@@ -310,7 +310,7 @@ public abstract class AnalysisTaskR extends AnalysisTask {
 	 * @param is
 	 * @return
 	 */
-	private byte[] getBytes(InputStream is) {
+	protected byte[] getBytes(InputStream is) {
 	  ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 	  int numRead = -1;
 	  try {
