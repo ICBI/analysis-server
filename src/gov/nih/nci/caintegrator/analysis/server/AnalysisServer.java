@@ -11,6 +11,7 @@ import gov.nih.nci.caintegrator.analysis.messaging.CorrelationRequest;
 import gov.nih.nci.caintegrator.analysis.messaging.ExpressionLookupRequest;
 import gov.nih.nci.caintegrator.analysis.messaging.FTestRequest;
 import gov.nih.nci.caintegrator.analysis.messaging.GeneralizedLinearModelRequest;
+import gov.nih.nci.caintegrator.analysis.messaging.HeatMapRequest;
 import gov.nih.nci.caintegrator.analysis.messaging.HierarchicalClusteringRequest;
 import gov.nih.nci.caintegrator.analysis.messaging.PrincipalComponentAnalysisRequest;
 import gov.nih.nci.caintegrator.exceptions.AnalysisServerException;
@@ -436,6 +437,8 @@ public class AnalysisServer implements MessageListener, ExceptionListener, Analy
 				processExpressionLookupRequest((ExpressionLookupRequest) request, resultDestination);
 			} else if (request instanceof CopyNumberLookupRequest) {
 				processCopyNumberLookupRequest((CopyNumberLookupRequest) request, resultDestination);
+			} else if (request instanceof HeatMapRequest) {
+				processHeatMapRequest((HeatMapRequest) request, resultDestination);
 			}
 			
 
@@ -552,6 +555,13 @@ public class AnalysisServer implements MessageListener, ExceptionListener, Analy
 	  CorrelationTaskR corrTaskR = new CorrelationTaskR(corrRequest, debugRcommands);
 	  corrTaskR.setJMSDestination(resultDestination);
 	  executor.execute(corrTaskR);
+	}
+	
+	private void processHeatMapRequest(HeatMapRequest heatMapRequest, Destination resultDestination) {
+		  logger.debug("heatMapRequest request=" + heatMapRequest);
+		  HeatMapTaskR heatMapTaskR = new HeatMapTaskR(heatMapRequest, debugRcommands);
+		  heatMapTaskR.setJMSDestination(resultDestination);
+		  executor.execute(heatMapTaskR);
 	}
 
 	/**
