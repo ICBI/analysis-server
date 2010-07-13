@@ -55,11 +55,27 @@ public class HeatMapTaskR extends AnalysisTaskR {
 			
 			rCmd = "dat<-na.omit(hcInputMatrix)";
 			doRvoidEval(rCmd);
-			rCmd = "scale.r<-scale(dat,center=TRUE,scale=TRUE)";
+			rCmd = "x=as.matrix(dat)";
+			doRvoidEval(rCmd);
+			rCmd = "x.mean=matrix(rep(rowMeans(x),ncol(x)),nrow(x),ncol(x))";
+			doRvoidEval(rCmd);
+			rCmd = "x.sd=matrix(rep(sd(t(x)), ncol(x)), nrow(x), ncol(x))";
+			doRvoidEval(rCmd);
+			rCmd = "x2=x-x.mean";
+			doRvoidEval(rCmd);
+			rCmd = "x3=(x-x.mean)/x.sd";
 			doRvoidEval(rCmd);
 			rCmd = "library(ctc)";
 			doRvoidEval(rCmd);
-			rCmd = "hclust2treeview(scale.r,file=\"" + baseFileName + ".cdt\",method = \"euclidean\",link = \"ward\",keep.hclust=T)";
+			rCmd = "hr=hcluster(x2)";
+			doRvoidEval(rCmd);
+			rCmd = "hc=hcluster(t(x2))";
+			doRvoidEval(rCmd);
+			rCmd = "r2atr(hc, file =\"" + baseFileName + ".atr\")";
+			doRvoidEval(rCmd);
+			rCmd = "r2gtr(hr, file =\"" + baseFileName + ".gtr\")";
+			doRvoidEval(rCmd);
+			rCmd = "r2cdt(hr, hc, x3, file =\"" + baseFileName + ".cdt\")";
 			doRvoidEval(rCmd);
 			
 			RFileInputStream is = getRComputeConnection().openFile(baseFileName + ".cdt");
