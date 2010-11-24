@@ -14,6 +14,7 @@ import gov.nih.nci.caintegrator.analysis.messaging.GeneralizedLinearModelRequest
 import gov.nih.nci.caintegrator.analysis.messaging.HeatMapRequest;
 import gov.nih.nci.caintegrator.analysis.messaging.HierarchicalClusteringRequest;
 import gov.nih.nci.caintegrator.analysis.messaging.PrincipalComponentAnalysisRequest;
+import gov.nih.nci.caintegrator.analysis.messaging.ChromosomalInstabilityIndexRequest;
 import gov.nih.nci.caintegrator.exceptions.AnalysisServerException;
 
 import java.io.FileInputStream;
@@ -439,6 +440,8 @@ public class AnalysisServer implements MessageListener, ExceptionListener, Analy
 				processCopyNumberLookupRequest((CopyNumberLookupRequest) request, resultDestination);
 			} else if (request instanceof HeatMapRequest) {
 				processHeatMapRequest((HeatMapRequest) request, resultDestination);
+			} else if (request instanceof ChromosomalInstabilityIndexRequest) {
+				processChromosomalInstabilityIndexRequest((ChromosomalInstabilityIndexRequest) request, resultDestination);
 			}
 			
 
@@ -562,6 +565,19 @@ public class AnalysisServer implements MessageListener, ExceptionListener, Analy
 		  HeatMapTaskR heatMapTaskR = new HeatMapTaskR(heatMapRequest, debugRcommands);
 		  heatMapTaskR.setJMSDestination(resultDestination);
 		  executor.execute(heatMapTaskR);
+	}
+	
+	/**
+	 * Process a ChromosomalInstabilityIndexRequest.
+	 * 
+	 * @param cinRequest object containing the request parameters for the CIN analysis
+	 * @param resultQueue2 
+	 */
+	public void processChromosomalInstabilityIndexRequest(ChromosomalInstabilityIndexRequest cinRequest, Destination resultDestination) {
+		logger.debug("processChromosomalInstabilityIndexRequest request=" + cinRequest);
+		ChromosomalInstabilityIndexTaskR cinTaskR = new ChromosomalInstabilityIndexTaskR(cinRequest, debugRcommands);
+		cinTaskR.setJMSDestination(resultDestination);
+		executor.execute(cinTaskR);
 	}
 
 	/**
