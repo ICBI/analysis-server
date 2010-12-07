@@ -233,7 +233,14 @@ public class ChromosomalInstabilityIndexTaskR extends AnalysisTaskR {
 			}
 			
 			doRvoidEval("cinInputMatrix <- dataMatrix");
-			setDataFile("hg18_annot.Rda");
+			
+			dataFileName = request.getCytobandsAnnotationFileName();
+			if (dataFileName != null) {
+				setDataFile(request.getCytobandsAnnotationFileName());
+			}
+			else {
+				throw new AnalysisServerException("Null annotation file name");
+			}
 			doRvoidEval("annotInputMatrix <- hg18_annot");
 			
 			String cytobandsFileName = null;

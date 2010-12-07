@@ -34,7 +34,7 @@
 	row.names=rownames(cin)
 	
 #	dev.new()
-	dev=png(file=paste(title_text, '.png',sep=''), title=title_text, pointsize=9)
+	dev=png(file=paste(title_text, '.png',sep=''), title=title_text, width=720, height=720, pointsize=9)
 	main.title=title_text
 	chr.len=annot[nrow(annot), 'end']
 	plot(x=c(-1,chr.len),y=c(-1,n.samp+1),xaxt='n',yaxt='n',ann=FALSE,xpd=NA,bty='n',type='n')
@@ -59,7 +59,7 @@
 			idx.color=which(whole.seq>=cin.value)[1]
 			rect(xleft=start, ybottom=i-1,xright=end,ytop=i, col=palette[idx.color], border=NA, ljoin=1)
 		}
-		text(x=-chr.len*0.02,y=(i-1)+0.5,labels=row.names[i],srt=90,cex=1.0,xpd=NA)
+		text(x=-chr.len*0.02,y=(i-1)+0.5,labels=row.names[i],adj=1, srt=0,cex=1.0,xpd=NA)
 	}
 	
 	plot.cytobands(annot, bot=n.samp+0.05, top=n.samp+0.2+0.05)
