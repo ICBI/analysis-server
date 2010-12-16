@@ -24,6 +24,8 @@ public class HeatMapTaskR extends AnalysisTaskR {
 	public void run() {
 		HeatMapRequest request = (HeatMapRequest)getRequest();
 		SampleGroup sampleGroup = request.getSampleGroup();
+		SampleGroup comparisonGroup = request.getComparisonGroup();
+
 		ReporterGroup reporterGroup = request.getReporterGroup();
 		
 		try {
@@ -39,7 +41,14 @@ public class HeatMapTaskR extends AnalysisTaskR {
 			String baseFileName = "heatmap_" + getRequest().getSessionId() + "_" + System.currentTimeMillis();
 			String rCmd = "";
 			doRvoidEval("hcInputMatrix <- dataMatrix");
-			if(sampleGroup != null) {
+			if(sampleGroup != null && comparisonGroup != null) {
+				rCmd = getRgroupCmd("sampleIds", sampleGroup);
+				doRvoidEval(rCmd);
+				rCmd = getRgroupCmd("sampleIds2", comparisonGroup);
+				doRvoidEval(rCmd);
+				rCmd = "hcInputMatrix <- getSubmatrix.twogrps(hcInputMatrix, sampleIds, sampleIds2)";
+				doRvoidEval(rCmd);
+			} else if(sampleGroup != null) {
 				rCmd = getRgroupCmd("sampleIds", sampleGroup);
 				doRvoidEval(rCmd);
 				rCmd = "hcInputMatrix <- getSubmatrix.onegrp(hcInputMatrix, sampleIds)";
@@ -71,8 +80,12 @@ public class HeatMapTaskR extends AnalysisTaskR {
 			doRvoidEval(rCmd);
 			rCmd = "hc=hcluster(t(x2))";
 			doRvoidEval(rCmd);
-			rCmd = "r2atr(hc, file =\"" + baseFileName + ".atr\")";
+			rCmd = "hc$order2=sort(hc$order)";
 			doRvoidEval(rCmd);
+			rCmd = "hc$order=hc$order2";
+			doRvoidEval(rCmd);
+//			rCmd = "r2atr(hc, file =\"" + baseFileName + ".atr\")";
+//			doRvoidEval(rCmd);
 			rCmd = "r2gtr(hr, file =\"" + baseFileName + ".gtr\")";
 			doRvoidEval(rCmd);
 			rCmd = "r2cdt(hr, hc, x3, file =\"" + baseFileName + ".cdt\")";
@@ -82,9 +95,9 @@ public class HeatMapTaskR extends AnalysisTaskR {
 			byte[] cdtFile = getBytes(is);
 			is.close();
 			
-			is = getRComputeConnection().openFile(baseFileName + ".atr");
-			byte[] atrFile = getBytes(is);
-			is.close();
+//			is = getRComputeConnection().openFile(baseFileName + ".atr");
+//			byte[] atrFile = getBytes(is);
+//			is.close();
 			
 			
 			is = getRComputeConnection().openFile(baseFileName + ".gtr");
@@ -93,11 +106,11 @@ public class HeatMapTaskR extends AnalysisTaskR {
 			
 			heatMapResult = new HeatMapResult(getRequest().getSessionId(), getRequest().getTaskId());
 			heatMapResult.setCdtFile(cdtFile);
-			heatMapResult.setAtrFile(atrFile);
+//			heatMapResult.setAtrFile(atrFile);
 			heatMapResult.setGtrFile(gtrFile);
 			
 			getRComputeConnection().removeFile(baseFileName + ".cdt");
-			getRComputeConnection().removeFile(baseFileName + ".atr");
+//			getRComputeConnection().removeFile(baseFileName + ".atr");
 			getRComputeConnection().removeFile(baseFileName + ".gtr");
 			
 			
