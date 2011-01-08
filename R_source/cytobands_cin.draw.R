@@ -38,18 +38,26 @@
 	main.title=title_text
 	chr.len=annot[nrow(annot), 'end']
 	plot(x=c(-1,chr.len),y=c(-1,n.samp+1),xaxt='n',yaxt='n',ann=FALSE,xpd=NA,bty='n',type='n')
+	title(main=paste('chromosome',chr,'cytobands CIN overview'),cex=4)
 	
 #	browser()
 	
 # palette set
-	ramp <- colorRamp(c("blue", "white","red"))
+	ramp <- colorRamp(c("black","red"))
 	palette=rgb( ramp(seq(0, 1, length = 100)), max = 255)
+#	browser()
+# cin=log2(cin+1)
+#	require(som)
+#	cin=normalize(cin,byrow=FALSE)
 	cin.max=max(cin)
 	cin.min=min(cin)
-	cin.mid=sort(cin)[floor(nrow(cin)*ncol(cin)/2)]
-	gain.seq=seq(cin.mid, cin.max, length = 50)
-	loss.seq=seq(cin.min, cin.mid, length = 50)
-	whole.seq=c(loss.seq,gain.seq)
+	cin.mid=(cin.max+cin.min)/2
+#	cin.mid=sort(cin)[floor(nrow(cin)*ncol(cin)/2)]
+#	gain.seq=seq(cin.mid, cin.max, length = 50)
+#	loss.seq=seq(cin.min, cin.mid, length = 50)
+#	whole.seq=c(loss.seq,gain.seq)
+#	browser()
+	whole.seq=seq(cin.min, cin.max, length = 100)
 	
 	for (i in 1:n.samp){
 		for(n.cyto in 1:ncol(cin)) {
@@ -59,7 +67,7 @@
 			idx.color=which(whole.seq>=cin.value)[1]
 			rect(xleft=start, ybottom=i-1,xright=end,ytop=i, col=palette[idx.color], border=NA, ljoin=1)
 		}
-		text(x=-chr.len*0.02,y=(i-1)+0.5,labels=row.names[i],adj=1, srt=0,cex=1.0,xpd=NA)
+		text(x=-chr.len*0.02,y=(i-1)+0.5,labels=row.names[i], adj=1, srt=0,cex=1.0,xpd=NA)
 	}
 	
 	plot.cytobands(annot, bot=n.samp+0.05, top=n.samp+0.2+0.05)
@@ -92,7 +100,7 @@
   	text(c(1, max.pos/2, max.pos), pal.bot-0.05,
       	   c(sprintf('%.2f', cin.min), sprintf('%.2f', cin.mid), sprintf('%.2f', cin.max)), adj=c(0.5, 1),xpd=NA)
 	
-	text(max.pos/2,pal.bot-2,paste('chromosome',chr,'cytobands CIN overview'),cex=1.5,xpd=NA)
+#text(max.pos/2,pal.bot-2,paste('chromosome',chr,'cytobands CIN overview'),cex=1.5,xpd=NA)
 	dev.off()
 	
 }
