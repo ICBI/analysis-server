@@ -70,7 +70,11 @@
 		text(x=-chr.len*0.02,y=(i-1)+0.5,labels=row.names[i], adj=1, srt=0,cex=1.0,xpd=NA)
 	}
 	
-	plot.cytobands(annot, bot=n.samp+0.05, top=n.samp+0.2+0.05)
+#plot.cytobands(annot, bot=n.samp+0.05, top=n.samp+0.2+0.05)
+	if (n.samp < 11)
+		plot.cytobands(annot, bot=n.samp+0.1, top=n.samp+0.3+0.1)
+	else
+		plot.cytobands(annot, bot=n.samp+0.3, top=n.samp+1.0+0.3)
 
 	type.classID=unique(labels.sort)
 	n.subclass=rep(0,length(type.classID))

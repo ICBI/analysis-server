@@ -111,7 +111,7 @@ public class ChromosomalInstabilityIndexTaskR extends AnalysisTaskR {
 			  throw new AnalysisServerException("Null cin data file name");
 			}
 					
-			if ((sampleGroup1 == null) || (sampleGroup1.size() < MIN_GROUP_SIZE)) {
+			/*if ((sampleGroup1 == null) || (sampleGroup1.size() < MIN_GROUP_SIZE)) {
 				  AnalysisServerException ex = new AnalysisServerException(
 					"Group1 is null or has less than " + MIN_GROUP_SIZE + " entries.");		 
 			      ex.setFailedRequest(request);
@@ -154,7 +154,7 @@ public class ChromosomalInstabilityIndexTaskR extends AnalysisTaskR {
 					      logger.error(ex.getMessage());
 					      return;   
 			  }
-			}
+			}*/
 			
 			//For now assume that there are two groups. When we get data for two channel array then
 			//allow only one group so leaving in the possibility of having only one group in the code 
@@ -165,8 +165,14 @@ public class ChromosomalInstabilityIndexTaskR extends AnalysisTaskR {
 			
 			sampleGrp1Len = sampleGroup1.size();
 			
-			String sampleGrp1RName = sampleGroup1.getGroupName().replaceAll(" ", "_");
+			/*String sampleGrp1RName = sampleGroup1.getGroupName().replaceAll(" ", "_");
+			sampleGrp1RName = sampleGrp1RName.replaceAll("-", "_");
 			String sampleGrp2RName = sampleGroup2.getGroupName().replaceAll(" ", "_");
+			sampleGrp2RName = sampleGrp2RName.replaceAll("-", "_");*/
+			String sampleGrp1RName = sampleGroup1.getGroupName();
+			sampleGrp1RName = getSampleGrpRName(sampleGrp1RName);
+			String sampleGrp2RName = sampleGroup2.getGroupName();
+			sampleGrp2RName = getSampleGrpRName(sampleGrp2RName);
 			
 			String rCmd = null;
 		
@@ -293,6 +299,17 @@ public class ChromosomalInstabilityIndexTaskR extends AnalysisTaskR {
 		   logStackTrace(logger, e);
 		   setException(e);
 		}
+	}
+	
+	private String getSampleGrpRName(String sampleGrpName) {
+		char[] invalidChars4R = new char[]{' ','*','?','~','[',']','"','+','-','<','>','#', '%','@','=','!','^','(',')','|','{','}','/','`',';','&',',','$',':','\'','\\'};
+		sampleGrpName = sampleGrpName.trim();
+		for (char w : invalidChars4R) {
+		    if (sampleGrpName.indexOf(w) > -1) {
+		    	sampleGrpName = sampleGrpName.replace(w, '_');
+		    }
+		}
+		return sampleGrpName;
 	}
 
 }

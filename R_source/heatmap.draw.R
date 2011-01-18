@@ -18,7 +18,10 @@
 	dev=png(file=paste(heatmap.title, '.png',sep=''), title=heatmap.title, pointsize=9)
 #main.title=heatmap.title
 	chr.len=22
-	plot(x=c(-1,chr.len),y=c(-1,n.samp+1),xaxt='n',yaxt='n',ann=FALSE,xpd=NA,bty='n',type='n')
+	if (n.samp > 11)
+		plot(x=c(-1,chr.len),y=c(-1,n.samp+3),xaxt='n',yaxt='n',ann=FALSE,xpd=NA,bty='n',type='n')
+	else 
+		plot(x=c(-1,chr.len),y=c(-1,n.samp+0.75),xaxt='n',yaxt='n',ann=FALSE,xpd=NA,bty='n',type='n')
 	title(main='heatmap CIN', cex.main = 1.25)
 	
 #	browser()
@@ -40,9 +43,16 @@
 #	browser()
 	whole.seq=seq(cin.min, cin.max, length = 100)
 	
+	if (n.samp > 11) 
+		text(x=0,y=n.samp+1.75,labels='chr #',srt=90,cex=1.5,xpd=NA)
+	else
+		text(x=0,y=n.samp+0.5,labels='chr #',srt=90,cex=1.5,xpd=NA)
 	for (i in 1:n.samp){		
 		for(j in 1:ncol(cin)) {
-			text(x=j,y=n.samp+1,labels=j,srt=90,cex=1.0,xpd=NA)
+			if (n.samp > 11 )
+				text(x=j,y=n.samp+2,labels=j,srt=90,cex=1.0,xpd=NA)			
+			else 
+				text(x=j,y=n.samp+0.75,labels=j,srt=90,cex=1.0,xpd=NA)
 			cin.value=cin[i,j]
 			idx.color=which(whole.seq>=cin.value)[1]
 			rect(xleft=j-0.5, ybottom=i-1,xright=j+0.5,ytop=i, col=palette[idx.color], border=NA, ljoin=1)
@@ -69,8 +79,13 @@
  	max.pos=chr.len
   	nlevels=length(palette)
   	x <- seq(1, max.pos, len=nlevels+1)
-  	pal.top = -0.25
-  	pal.bot = -0.45
+	if (n.samp > 11) {
+		pal.top = -0.45
+		pal.bot = -0.75
+	} else {
+		pal.top = -0.25
+		pal.bot = -0.45
+	}
   	rect(x[1:nlevels], pal.bot, x[-1], pal.top, col=palette, border=NA, ljoin=1,xpd=NA)
 #  rect(1, pal.bot, max.pos, pal.top, col=NA, border='gray20')
   	segments(x0=c(1, max.pos/2, max.pos), y0=pal.bot,x1=c(1, max.pos/2, max.pos),
