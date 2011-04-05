@@ -68,7 +68,7 @@
 			mark.pos=n.subclass[i]/2
 		else
 			mark.pos=(sum(n.subclass[1:i])+sum(n.subclass[1:(i-1)]))/2
-		text(x=chr.len+1,y=mark.pos,labels=type.classID[i],srt=90,cex=1.5,xpd=NA)
+		text(x=chr.len+1,y=mark.pos,labels=type.classID[i],srt=90,cex=1.0,xpd=NA)
 		if(i!=(length(type.classID)))
 		abline(h=n.subclass[i],col='green', lwd=2, xpd=FALSE)
 	}
