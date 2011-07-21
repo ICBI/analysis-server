@@ -1,1 +1,1 @@
-R CMD Rserve --RS-workdir /local/analysis-server-new/tempFiles
+R CMD Rserve --RS-workdir /opt/analysis-server/tempFiles

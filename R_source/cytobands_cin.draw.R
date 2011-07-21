@@ -5,7 +5,7 @@
 ## title_text: the saved file name and title
 
 
-"cytobands_cin.draw" <-function(cin, clinical.inf, chr, annot, title_text='text') {
+"cytobands_cin.draw" <-function(cin, clinical.inf, chr, annot, title_text='text', cin.max.set=5) {
 	
 	n.cur.chr=0
 	sn.cur.chr=0
@@ -33,8 +33,9 @@
 	n.samp=nrow(cin)	
 	row.names=rownames(cin)
 	
-#	dev.new()
+#	dev.new() width=12, height=15
 	dev=png(file=paste(title_text, '.png',sep=''), title=title_text, width=720, height=720, pointsize=9)
+#	dev=pdf(file=paste(title_text, '.pdf',sep=''), width=12, height=15, title=title_text, pointsize=9)
 	main.title=title_text
 	chr.len=annot[nrow(annot), 'end']
 	plot(x=c(-1,chr.len),y=c(-1,n.samp+1),xaxt='n',yaxt='n',ann=FALSE,xpd=NA,bty='n',type='n')
@@ -49,9 +50,20 @@
 # cin=log2(cin+1)
 #	require(som)
 #	cin=normalize(cin,byrow=FALSE)
-	cin.max=max(cin)
-	cin.min=min(cin)
+
+#############################
+	if(cin.max.set==-1) {
+		cin.max=max(cin)
+		cin.min=min(cin)
+	}
+	else{
+		cin.max=cin.max.set
+		cin.min=0
+	}
 	cin.mid=(cin.max+cin.min)/2
+#################################
+
+
 #	cin.mid=sort(cin)[floor(nrow(cin)*ncol(cin)/2)]
 #	gain.seq=seq(cin.mid, cin.max, length = 50)
 #	loss.seq=seq(cin.min, cin.mid, length = 50)
@@ -64,10 +76,13 @@
 			start=annot[n.cyto,'start']
 			end=annot[n.cyto,'end']
 			cin.value=cin[i,n.cyto]
-			idx.color=which(whole.seq>=cin.value)[1]
+#####	idx.color=which(whole.seq>=cin.value)[1]
+#################
+			idx.color=tail(which(cin.value>=whole.seq),1)
+#################
 			rect(xleft=start, ybottom=i-1,xright=end,ytop=i, col=palette[idx.color], border=NA, ljoin=1)
 		}
-		text(x=-chr.len*0.02,y=(i-1)+0.5,labels=row.names[i], adj=1, srt=0,cex=1.0,xpd=NA)
+		text(x=-chr.len*0.02,y=(i-1)+0.5,labels=row.names[i],adj=1,srt=0,cex=1.0,xpd=NA)
 	}
 	
 #plot.cytobands(annot, bot=n.samp+0.05, top=n.samp+0.2+0.05)

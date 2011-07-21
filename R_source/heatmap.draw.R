@@ -1,7 +1,7 @@
 ## cin: regular CIN matrix, each row is a chromosome, each column is a sample(patient)
 ## clinical.inf: n*2 matrix, the 1st column is 'sample name', the second is 'label'
 
-'heatmap.draw'<-function(cin, clinical.inf, heatmap.title='Chromosome instability index'){
+'heatmap.draw'<-function(cin, clinical.inf, heatmap.title='Chromosome instability index', cin.max.set=5) {
 ## re-arrange the cin and labels
 	labels=matrix(clinical.inf[,2])
 	samplenames=matrix(clinical.inf[,1])
@@ -16,8 +16,10 @@
 	
 #	dev.new()
 	dev=png(file=paste(heatmap.title, '.png',sep=''), title=heatmap.title, pointsize=9)
+#	dev=pdf(file=paste(heatmap.title, '.pdf',sep=''), width=12, height=15, title=heatmap.title, pointsize=9)
 #main.title=heatmap.title
 	chr.len=22
+#plot(x=c(-1,chr.len),y=c(-1,n.samp+1),xaxt='n',yaxt='n',ann=FALSE,xpd=NA,bty='n',type='n')
 	if (n.samp > 11)
 		plot(x=c(-1,chr.len),y=c(-1,n.samp+3),xaxt='n',yaxt='n',ann=FALSE,xpd=NA,bty='n',type='n')
 	else 
@@ -33,9 +35,19 @@
 # cin=log2(cin+1)
 #	require(som)
 #	cin=normalize(cin,byrow=FALSE)
-	cin.max=max(cin)
-	cin.min=min(cin)
+
+#############################
+	if(cin.max.set==-1) {
+		cin.max=max(cin)
+		cin.min=min(cin)
+	}
+	else{
+		cin.max=cin.max.set
+		cin.min=0
+	}
 	cin.mid=(cin.max+cin.min)/2
+##############################	
+	
 #	cin.mid=sort(cin)[floor(nrow(cin)*ncol(cin)/2)]
 #	gain.seq=seq(cin.mid, cin.max, length = 50)
 #	loss.seq=seq(cin.min, cin.mid, length = 50)
@@ -49,15 +61,19 @@
 		text(x=0,y=n.samp+0.5,labels='chr #',srt=90,cex=1.5,xpd=NA)
 	for (i in 1:n.samp){		
 		for(j in 1:ncol(cin)) {
+#text(x=j,y=n.samp+1,labels=j,srt=90,cex=1.0,xpd=NA)
 			if (n.samp > 11 )
 				text(x=j,y=n.samp+2,labels=j,srt=90,cex=1.0,xpd=NA)			
 			else 
 				text(x=j,y=n.samp+0.75,labels=j,srt=90,cex=1.0,xpd=NA)
 			cin.value=cin[i,j]
-			idx.color=which(whole.seq>=cin.value)[1]
+#####	idx.color=which(whole.seq>=cin.value)[1]
+##############
+			idx.color=tail(which(cin.value>=whole.seq),1)
+##############
 			rect(xleft=j-0.5, ybottom=i-1,xright=j+0.5,ytop=i, col=palette[idx.color], border=NA, ljoin=1)
 		}
-		text(x=-chr.len*0.02,y=(i-1)+0.5,labels=row.names[i],adj=1, srt=0,cex=1.0,xpd=NA)
+		text(x=-chr.len*0.02,y=(i-1)+0.5,labels=row.names[i],adj=1,srt=0,cex=1.0,xpd=NA)
 	}
 
 	type.classID=unique(labels.sort)
@@ -79,6 +95,8 @@
  	max.pos=chr.len
   	nlevels=length(palette)
   	x <- seq(1, max.pos, len=nlevels+1)
+#pal.top = -0.25
+#pal.bot = -0.45
 	if (n.samp > 11) {
 		pal.top = -0.45
 		pal.bot = -0.75
@@ -94,7 +112,6 @@
       	   c(sprintf('%.2f', cin.min), sprintf('%.2f', cin.mid), sprintf('%.2f', cin.max)), adj=c(0.5, 1),xpd=NA)
 	
 #text(max.pos/2,pal.bot-2,heatmap.title,cex=1.5,xpd=NA)
-
 	dev.off()
 }
 
