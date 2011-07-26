@@ -86,10 +86,21 @@
 	}
 	
 #plot.cytobands(annot, bot=n.samp+0.05, top=n.samp+0.2+0.05)
-	if (n.samp < 11)
+	if (n.samp <= 11) {
 		plot.cytobands(annot, bot=n.samp+0.1, top=n.samp+0.3+0.1)
-	else
+	} else if (n.samp > 11 && n.samp <= 22) {
+		plot.cytobands(annot, bot=n.samp+0.15, top=n.samp+0.5+0.15)
+	} else if (n.samp > 22 && n.samp <= 32) {
+		plot.cytobands(annot, bot=n.samp+0.2, top=n.samp+0.7+0.2)
+	} else if (n.samp > 32 && n.samp <= 50) {
 		plot.cytobands(annot, bot=n.samp+0.3, top=n.samp+1.0+0.3)
+	} else if (n.samp > 50 && n.samp <= 75) {
+		plot.cytobands(annot, bot=n.samp+0.4, top=n.samp+1.2+0.4)
+	} else if (n.samp > 75 && n.samp <= 100) {
+		plot.cytobands(annot, bot=n.samp+0.5, top=n.samp+1.8+0.5)
+	} else {
+		plot.cytobands(annot, bot=n.samp+1.6, top=n.samp+4+1.6)
+	}
 
 	type.classID=unique(labels.sort)
 	n.subclass=rep(0,length(type.classID))
@@ -110,8 +121,24 @@
  	max.pos=chr.len
   	nlevels=length(palette)
   	x <- seq(1, max.pos, len=nlevels+1)
-  	pal.top = -0.25
-  	pal.bot = -0.45
+#pal.top = -0.25
+#pal.bot = -0.45
+	if (n.samp > 11 && n.samp <= 32) {
+		pal.top = -0.35
+		pal.bot = -0.55
+	} else if (n.samp > 32 && n.samp <= 50) {
+		pal.top = -0.45
+		pal.bot = -0.75
+	} else if (n.samp > 50 && n.samp <= 100) {
+		pal.top = -0.65
+		pal.bot = -1.05
+	} else if (n.samp >100) {
+		pal.top = -1.25
+		pal.bot = -1.85
+	} else {
+		pal.top = -0.25
+		pal.bot = -0.45
+	}
   	rect(x[1:nlevels], pal.bot, x[-1], pal.top, col=palette, border=NA, ljoin=1,xpd=NA)
 #  rect(1, pal.bot, max.pos, pal.top, col=NA, border='gray20')
   	segments(x0=c(1, max.pos/2, max.pos), y0=pal.bot,x1=c(1, max.pos/2, max.pos),

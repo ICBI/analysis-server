@@ -20,10 +20,21 @@
 #main.title=heatmap.title
 	chr.len=22
 #plot(x=c(-1,chr.len),y=c(-1,n.samp+1),xaxt='n',yaxt='n',ann=FALSE,xpd=NA,bty='n',type='n')
-	if (n.samp > 11)
+	if (n.samp > 11 && n.samp <= 22) {
+		plot(x=c(-1,chr.len),y=c(-1,n.samp+ 1.25),xaxt='n',yaxt='n',ann=FALSE,xpd=NA,bty='n',type='n')
+	} else if (n.samp > 22 && n.samp <= 32) {
+			plot(x=c(-1,chr.len),y=c(-1,n.samp+ 2),xaxt='n',yaxt='n',ann=FALSE,xpd=NA,bty='n',type='n')
+	} else if (n.samp > 32 && n.samp <= 50) {
 		plot(x=c(-1,chr.len),y=c(-1,n.samp+3),xaxt='n',yaxt='n',ann=FALSE,xpd=NA,bty='n',type='n')
-	else 
+	} else if (n.samp > 50 && n.samp <= 75) {
+		plot(x=c(-1,chr.len),y=c(-1,n.samp+5),xaxt='n',yaxt='n',ann=FALSE,xpd=NA,bty='n',type='n')
+	} else if (n.samp > 75 && n.samp <= 100) {
+		plot(x=c(-1,chr.len),y=c(-1,n.samp+6),xaxt='n',yaxt='n',ann=FALSE,xpd=NA,bty='n',type='n')
+	} else if (n.samp > 100) {
+		plot(x=c(-1,chr.len),y=c(-1,n.samp+12),xaxt='n',yaxt='n',ann=FALSE,xpd=NA,bty='n',type='n')
+	} else {
 		plot(x=c(-1,chr.len),y=c(-1,n.samp+0.75),xaxt='n',yaxt='n',ann=FALSE,xpd=NA,bty='n',type='n')
+	}
 	title(main='heatmap CIN', cex.main = 1.25)
 	
 #	browser()
@@ -55,17 +66,35 @@
 #	browser()
 	whole.seq=seq(cin.min, cin.max, length = 100)
 	
-	if (n.samp > 11) 
+	if (n.samp > 11 && n.samp <= 22) {
+		text(x=0,y=n.samp+ 0.85,labels='chr #',srt=90,cex=1.5,xpd=NA)
+	} else if (n.samp > 22 && n.samp <= 32) {
+		text(x=0,y=n.samp+1.25,labels='chr #',srt=90,cex=1.5,xpd=NA)
+	} else if (n.samp > 32 && n.samp <= 50) {
 		text(x=0,y=n.samp+1.75,labels='chr #',srt=90,cex=1.5,xpd=NA)
-	else
+	} else if (n.samp > 50 && n.samp <= 100) {
+		text(x=0,y=n.samp + 3.5,labels='chr #',srt=90,cex=1.5,xpd=NA)
+	} else if (n.samp > 100) {
+		text(x=0,y=n.samp + 7,labels='chr #',srt=90,cex=1.5,xpd=NA)
+	} else {
 		text(x=0,y=n.samp+0.5,labels='chr #',srt=90,cex=1.5,xpd=NA)
+	}
 	for (i in 1:n.samp){		
 		for(j in 1:ncol(cin)) {
 #text(x=j,y=n.samp+1,labels=j,srt=90,cex=1.0,xpd=NA)
-			if (n.samp > 11 )
-				text(x=j,y=n.samp+2,labels=j,srt=90,cex=1.0,xpd=NA)			
-			else 
+			if (n.samp > 11 && n.samp <= 22 ) {
+				text(x=j,y=n.samp+0.85,labels=j,srt=90,cex=1.0,xpd=NA)	
+			} else if (n.samp > 22 && n.samp <= 32 ) {
+				text(x=j,y=n.samp+1.25,labels=j,srt=90,cex=1.0,xpd=NA)
+			} else if (n.samp > 32 && n.samp <= 50 ) {
+					text(x=j,y=n.samp+2,labels=j,srt=90,cex=1.0,xpd=NA)	
+			} else if (n.samp > 50 && n.samp <= 100) {
+				text(x=j,y=n.samp+3.75,labels=j,srt=90,cex=1.0,xpd=NA)
+			} else if (n.samp > 100) {
+				text(x=j,y=n.samp+ 7.25,labels=j,srt=90,cex=1.0,xpd=NA)
+			} else {
 				text(x=j,y=n.samp+0.75,labels=j,srt=90,cex=1.0,xpd=NA)
+			}
 			cin.value=cin[i,j]
 #####	idx.color=which(whole.seq>=cin.value)[1]
 ##############
@@ -97,9 +126,18 @@
   	x <- seq(1, max.pos, len=nlevels+1)
 #pal.top = -0.25
 #pal.bot = -0.45
-	if (n.samp > 11) {
+	if (n.samp > 11 && n.samp <= 32) {
+		pal.top = -0.35
+		pal.bot = -0.55
+	} else if (n.samp > 32 && n.samp <= 50) {
 		pal.top = -0.45
 		pal.bot = -0.75
+	} else if (n.samp > 50 && n.samp <= 100) {
+		pal.top = -0.65
+		pal.bot = -1.05
+	} else if (n.samp >100) {
+		pal.top = -1.25
+		pal.bot = -1.85
 	} else {
 		pal.top = -0.25
 		pal.bot = -0.45
