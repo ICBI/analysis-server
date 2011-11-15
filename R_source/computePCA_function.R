@@ -40,6 +40,9 @@
     
 # No filter PCA computation
 	computePCAnoFilter <- function(datamat) {
-	    dpca <- prcomp(t(datamat))
+	    #dpca <- prcomp(t(datamat))
+		
+		tmp <- apply(is.na(datamat),1,sum,na.rm=T)
+		dpca <- prcomp(t(datamat[tmp==0,]))
 		return(dpca)
 	}
