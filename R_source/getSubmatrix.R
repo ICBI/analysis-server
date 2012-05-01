@@ -54,5 +54,12 @@ getSubmatrix.rep <- function(datmat, rep.ids) {
     return(Submatrix.rep)
 }
 
+getSubmatrix <- function(datmat, grpids, rep.ids) {
+	allrep.ids <- dimnames(datmat)[[1]]
+	allids <- dimnames(datmat)[[2]]
+    Submatrix <- as.matrix(datmat[allrep.ids%in%rep.ids,allids%in%grpids])
+    return(Submatrix)
+}
+
 
 # Submatrix.rep <- getSubmatrix.rep(datmat, rep.ids)  
