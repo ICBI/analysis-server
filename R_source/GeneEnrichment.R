@@ -13,7 +13,7 @@ enrichGenes <- function(genes, annotationFile) {
 		return("ERROR: Gene list has less than two pathways.")
 	}
 	labelR=BrainLists[,1]
-	TestResults = userListEnrichment(geneR, labelR=labelR, fnIn=c(geneFile), catNmIn=c("TEST1"), nameOut = "testEnrichment.csv",outputCorrectedPvalues=TRUE)
+	TestResults = userListEnrichment(geneR, labelR=labelR, fnIn=c(geneFile), catNmIn=c("TEST1"), nameOut = "/tmp/testEnrichment.csv",outputCorrectedPvalues=TRUE)
 	pathwayIndex <- TestResults$sigOverlaps[,1]
 	pathways = c()
 	overlaps = c()
