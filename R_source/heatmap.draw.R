@@ -15,7 +15,7 @@
 	row.names=rownames(cin)
 	
 #	dev.new()
-	dev=png(file=paste(heatmap.title, '.png',sep=''), title=heatmap.title, pointsize=9)
+	dev=png(file=paste(heatmap.title, '.png',sep=''), title=heatmap.title, pointsize=9, type="cairo")
 #	dev=pdf(file=paste(heatmap.title, '.pdf',sep=''), width=12, height=15, title=heatmap.title, pointsize=9)
 #main.title=heatmap.title
 	chr.len=22

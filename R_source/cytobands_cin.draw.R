@@ -34,7 +34,7 @@
 	row.names=rownames(cin)
 	
 #	dev.new() width=12, height=15
-	dev=png(file=paste(title_text, '.png',sep=''), title=title_text, width=720, height=720, pointsize=9)
+	dev=png(file=paste(title_text, '.png',sep=''), title=title_text, width=720, height=720, pointsize=9, type="cairo")
 #	dev=pdf(file=paste(title_text, '.pdf',sep=''), width=12, height=15, title=title_text, pointsize=9)
 	main.title=title_text
 	chr.len=annot[nrow(annot), 'end']
